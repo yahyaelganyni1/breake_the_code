@@ -3,14 +3,17 @@ class Game < ApplicationRecord
   before_create :generate_secret_code
 
   def over?
-    guesses.count >= 10 || guesses.any? { |guess| guess.code == secret_code }
+    guesses.count >= 10 && guesses.last.code != secret_code
+  end
+
+  def you_win?
+    guesses.last == secret_code && guesses.count <= 10
   end
 
   private
 
   def generate_secret_code
-    numbers = (1..9).to_a
-    self.secret_code = 4.times.map { numbers.sample }.join
-    p "Secret code: #{secret_code}"
+    numbers = (1..9).to_a.shuffle
+    self.secret_code = 4.times.map { numbers.pop }.join
   end
 end

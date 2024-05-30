@@ -12,7 +12,7 @@
 <%= form_with model: [@game, @guess], local: true do |form| %>
     <div>
         <%= form.label :code, "Your Guess" %>
-        <%= form.text_field :code, pattern: "[0-9]+", title: "Please enter numbers only", maxlength: 4, oninput: "checkDuplicate(this)" %>
+        <%= form.text_field :code, pattern: "[0-9]+", title: "Please enter numbers only", oninput: "checkDuplicate(this)", required: true, minlength: 4, maxlength: 4 %>
         <script>
             function checkDuplicate(input) {
                 var code = input.value;
@@ -22,5 +22,5 @@
             }
         </script>
     </div>
-    <%= form.submit "Submit Guess" %>
+    <%= form.submit "Submit Guess", disabled: @game.over? %>
 <% end %>
