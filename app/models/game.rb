@@ -6,7 +6,7 @@ class Game < ApplicationRecord
     guesses.count >= 10 && guesses.last.code != secret_code
   end
 
-  def you_win?
+  def won?
     guesses.last == secret_code && guesses.count <= 10
   end
 

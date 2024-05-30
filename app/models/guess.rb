@@ -12,7 +12,7 @@ class Guess < ApplicationRecord
     exact_matches = guess_code.each_with_index.count { |number, i| number == secret_code[i] }
     number_matches = (guess_code & secret_code).flat_map { |number| [guess_code.count(number), secret_code.count(number)].min }.sum - exact_matches
     p "Exact: #{exact_matches}, number only: #{number_matches}"
-    self.feedback = "Exact: #{exact_matches}, number only: #{number_matches}"
+    # self.feedback = "Exact: #{exact_matches}, number only: #{number_matches}"
     feedback = []
     guess_code.each_with_index do |number, i|
       if number == secret_code[i]
@@ -26,6 +26,6 @@ class Guess < ApplicationRecord
       feedback << "3"
       end
     end
-    self.feedback = feedback.join(", ")
+    self.feedback = feedback.shuffle.join
   end
 end
