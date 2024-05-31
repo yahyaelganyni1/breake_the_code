@@ -1,59 +1,61 @@
 <div class="game-page">
   <h1 class="game-page_title">Break the Code</h1>
-  <p
+  <%# <p
     style="color: #fff; font-weight: bold; text-align: center; margin-bottom: 20px;"
   >Secret code: <%= @game.secret_code %> (for debugging, should be hidden)</p>
-  <%= form_with model: [@game, @guess], local: true, class: "game-page_form" do |form| %>
-    <div>
-      <%=
+%>
+<%= form_with model: [@game, @guess], local: true, class: "game-page_form" do |form| %>
+  <div>
+    <%=
         form.number_field :code, pattern: "[0-9]+",
          title: "Please enter numbers only",
           oninput: "checkDuplicate(this)",
            required: true, minlength: 4, maxlength: 4,
             disabled: @game.over? || @game.won?,
             class: "game-page_form_input",
-            placeholder: "X X X X"
+            placeholder: "X X X X",
+            autofocus: true
            %>
-      <script>
-        function checkDuplicate(input) {
-            const code = input.value;
-          const numbers = code.split("");
-          const uniqueNumbers = [...new Set(numbers)];
-          input.setCustomValidity(uniqueNumbers.length === numbers.length ? "" : "Duplicate numbers are not allowed.");
-            const validLength = code.length === 4;
-            input.setCustomValidity(validLength ? "" : "Please enter exactly 4 numbers.");
+    <script>
+      function checkDuplicate(input) {
+          const code = input.value;
+        const numbers = code.split("");
+        const uniqueNumbers = [...new Set(numbers)];
+        input.setCustomValidity(uniqueNumbers.length === numbers.length ? "" : "Duplicate numbers are not allowed.");
+          const validLength = code.length === 4;
+          input.setCustomValidity(validLength ? "" : "Please enter exactly 4 numbers.");
 
-             }
-      </script>
-    </div>
-    <%= form.submit "Submit Guess", disabled: @game.over? || @game.won?, class: "game-page_form_button" %>
-  <% end %>
-  <%= render "games/partials/gameover", game: @game %>
-  <% if @game.guesses.any? %>
-    <h2>Your Guesses</h2>
-    <ol class="game-page_guesses">
-      <% @game.guesses.each do |guess| %>
-        <li class="game-page_guesses_guess_list_item">
-          <p class="game-page_guesses_guess_list_item_the_guess">
-            -<%= @game.guesses.index(guess) + 1 %>-   <%= guess.code %>
-          </p>
-          <div class="game-page_guesses_feedback">
-            <% guess.feedback.each_char do |number| %>
-              <p class="game-page_guesses_feedback_p">
-                <% if number == "1" %>
-                  <div class="right-number-right-place"></div>
-                <% end %>
-                <% if number == "2" %>
-                  <div class="right-number-wrong-place"></div>
-                <% end %>
-                <% if number == "3" %>
-                  <div class="wrong"></div>
-                <% end %>
-              </p>
-            <% end %>
-          </div>
-        </li>
-      <% end %>
-    </ol>
-  <% end %>
+           }
+    </script>
+  </div>
+  <%= form.submit "Submit Guess", disabled: @game.over? || @game.won?, class: "game-page_form_button" %>
+<% end %>
+<%= render "games/partials/gameover", game: @game %>
+<% if @game.guesses.any? %>
+  <h2>Your Guesses</h2>
+  <ol class="game-page_guesses">
+    <% @game.guesses.each do |guess| %>
+      <li class="game-page_guesses_guess_list_item">
+        <p class="game-page_guesses_guess_list_item_the_guess">
+          -<%= @game.guesses.index(guess) + 1 %>-   <%= guess.code %>
+        </p>
+        <div class="game-page_guesses_feedback">
+          <% guess.feedback.each_char do |number| %>
+            <p class="game-page_guesses_feedback_p">
+              <% if number == "1" %>
+                <div class="right-number-right-place"></div>
+              <% end %>
+              <% if number == "2" %>
+                <div class="right-number-wrong-place"></div>
+              <% end %>
+              <% if number == "3" %>
+                <div class="wrong"></div>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
 </div>
