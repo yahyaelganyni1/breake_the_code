@@ -1,0 +1,127 @@
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game-page .game-page_title {
+  font-size: 4em;
+  margin: 1rem;
+  color: #f8e5ee;
+}
+.game-page .game-page_over_message {
+  font-size: 2em;
+  margin: 1rem;
+  color: #f8e5ee;
+}
+.game-page .game-page_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.game-page .game-page_form .game-page_form_input {
+  font-size: 1em;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  font-size: 1.5em;
+  text-align: center;
+  text-transform: uppercase;
+  border: none;
+}
+.game-page .game-page_form .game-page_form_input:focus {
+  outline: none;
+}
+.game-page .game-page_form .game-page_form_button {
+  font-size: 1.5em;
+  margin: 0.5rem;
+  padding: 0.3rem;
+  border: 1px solid #f8e5ee;
+  border-radius: 10px;
+  background-color: #2a2d43;
+  color: #f8e5ee;
+  cursor: pointer;
+}
+.game-page .game-page_guesses {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem;
+  border: 6px solid #f8e5ee;
+  border-radius: 20px;
+  background-color: #2a2d43;
+  color: #f8e5ee;
+}
+.game-page .game-page_guesses .game-page_guesses_guess_list_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+.game-page .game-page_guesses .game-page_guesses_guess_list_item .game-page_guesses_guess_list_item_the_guess {
+  font-size: 1.5em;
+  padding: 0.5rem;
+}
+.game-page .game-page_guesses .game-page_guesses_guess_list_item .game-page_guesses_feedback {
+  display: flex;
+  padding: 0.5rem;
+  border: 1px solid #f8e5ee;
+  border-radius: 10px;
+}
+.game-page .game-page_guesses .right-number-right-place {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  position: relative;
+  border: 1px solid #00ff00; /* Adjust the border color as needed */
+}
+.game-page .game-page_guesses .right-number-right-place::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 14px;
+  border-bottom: 2px solid #00ff00;
+  border-right: 2px solid #00ff00;
+  transform: translate(-50%, -65%) rotate(32deg);
+}
+.game-page .game-page_guesses .right-number-wrong-place {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  position: relative;
+}
+.game-page .game-page_guesses .right-number-wrong-place::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 14px;
+  border-bottom: 2px solid #00ff00;
+  border-right: 2px solid #00ff00;
+  transform: translate(-50%, -65%) rotate(32deg);
+}
+.game-page .game-page_guesses .wrong {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  position: relative;
+}
+.game-page .game-page_guesses .wrong::before,
+.game-page .game-page_guesses .wrong::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px; /* Adjust the size as needed */
+  height: 2px; /* Adjust the thickness as needed */
+  background-color: red; /* Adjust the color as needed */
+}
+.game-page .game-page_guesses .wrong::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.game-page .game-page_guesses .wrong::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}/*# sourceMappingURL=game.css.map */

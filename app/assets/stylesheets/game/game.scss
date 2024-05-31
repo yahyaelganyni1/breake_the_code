@@ -1,0 +1,89 @@
+$main-dark-color: #2a2d43;
+$main-light-color: #f8e5ee;
+$main-light-color2: #ffc600;
+$redish_color: #cc2936;
+
+.game-page {
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: center;
+
+  .game-page_title {
+    font-size: 4em;
+    margin: 1rem;
+    color: $main-light-color;
+  }
+
+  .game-page_over_message {
+    font-size: 2em;
+    margin: 1rem;
+    color: $main-light-color;
+  }
+
+  .game-page_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .game-page_form_input {
+      font-size: 1em;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 7px;
+      font-size: 1.5em;
+      text-align: center;
+      text-transform: uppercase;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .game-page_form_button {
+      font-size: 1.5em;
+      margin: 0.5rem;
+      padding: 0.3rem;
+      border: 1px solid $main-light-color;
+      border-radius: 10px;
+      background-color: $main-dark-color;
+      color: $main-light-color;
+      cursor: pointer;
+    }
+  }
+
+  .game-page_guesses {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    padding: 1rem;
+    border: 6px solid $main-light-color;
+    border-radius: 20px;
+    background-color: $main-dark-color;
+    color: $main-light-color;
+
+    .game-page_guesses_guess_list_item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0.5rem;
+      padding: 0.5rem;
+
+      .game-page_guesses_guess_list_item_the_guess {
+        font-size: 1.5em;
+        padding: 0.5rem;
+      }
+
+      .game-page_guesses_feedback {
+        display: flex;
+        padding: 0.5rem;
+        border: 1px solid $main-light-color;
+        border-radius: 10px;
+      }
+    }
+  }
+}

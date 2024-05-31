@@ -1,0 +1,68 @@
+$main-dark-color: #2a2d43;
+$main-light-color: #f8e5ee;
+$main-light-color2: #ffc600;
+$redish_color: #cc2936;
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .home-page-about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    margin: 1rem;
+    color: $main-light-color;
+  }
+
+  .home-page-about_title {
+    font-size: 2em;
+    margin: 1rem;
+    color: $main-light-color;
+  }
+
+  .home-page-about_description {
+    font-size: 1.7em;
+    margin: 1rem;
+    color: $main-light-color;
+    width: 80%;
+    text-align: center;
+  }
+
+  .home-page-about_feedback {
+    font-size: 1.5em;
+    margin: 1rem;
+    color: $main-light-color;
+    background-color: $main-dark-color;
+    padding: 1rem;
+    border-radius: 10px;
+
+    .home-page-about_feedback_list_item {
+      display: flex;
+    }
+  }
+
+  .home-page-start {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+
+    .home-page-start_button {
+      font-size: 1.5em;
+      margin: 0.5rem;
+      padding: 0.3rem;
+      border: 1px solid $main-light-color;
+      border-radius: 10px;
+      background-color: $main-dark-color;
+      color: $main-light-color;
+      cursor: pointer;
+    }
+  }
+}

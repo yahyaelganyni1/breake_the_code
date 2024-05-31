@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_225933) do
     t.integer "attempts"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_over"
+    t.boolean "is_over", default: false
   end
 
   create_table "guesses", force: :cascade do |t|

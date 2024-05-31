@@ -13,3 +13,172 @@
  *= require_tree .
  *= require_self
  */
+
+* {
+  box-sizing: border-box;
+}
+
+/* CSS Reset */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* Add your custom styles below this line */
+
+a,
+ol,
+ul {
+  list-style: none;
+  text-decoration: none;
+}
+
+/* reomve default button styles */
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* remove style from input type button */
+
+input[type='button'] {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Add your custom styles below this line */
+
+body {
+  line-height: 1;
+  background-color: #cc2936;
+}
+
+.right-number-right-place {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  position: relative;
+  border: 1px solid #00ff00; /* Adjust the border color as needed */
+}
+
+.right-number-right-place::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 14px;
+  border-bottom: 2px solid #00ff00;
+  border-right: 2px solid #00ff00;
+  transform: translate(-50%, -65%) rotate(32deg);
+}
+
+.right-number-wrong-place {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  position: relative;
+}
+
+.right-number-wrong-place::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 14px;
+  border-bottom: 2px solid #00ff00;
+  border-right: 2px solid #00ff00;
+  transform: translate(-50%, -65%) rotate(32deg);
+}
+
+.wrong {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  position: relative;
+}
+
+.wrong::before,
+.wrong::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px; /* Adjust the size as needed */
+  height: 2px; /* Adjust the thickness as needed */
+  background-color: red; /* Adjust the color as needed */
+}
+
+.wrong::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.wrong::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}

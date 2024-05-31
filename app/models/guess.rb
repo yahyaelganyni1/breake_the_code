@@ -7,11 +7,11 @@ class Guess < ApplicationRecord
   def generate_feedback
     guess_code = code.split('')
     secret_code = game.secret_code.split('')
-    p "Guess code: A111#{guess_code}"
-    p "Secret code: A111#{secret_code}"
-    exact_matches = guess_code.each_with_index.count { |number, i| number == secret_code[i] }
-    number_matches = (guess_code & secret_code).flat_map { |number| [guess_code.count(number), secret_code.count(number)].min }.sum - exact_matches
-    p "Exact: #{exact_matches}, number only: #{number_matches}"
+    # p "Guess code: A111#{guess_code}"
+    # p "Secret code: A111#{secret_code}"
+    # exact_matches = guess_code.each_with_index.count { |number, i| number == secret_code[i] }
+    # number_matches = (guess_code & secret_code).flat_map { |number| [guess_code.count(number), secret_code.count(number)].min }.sum - exact_matches
+    # p "Exact: #{exact_matches}, number only: #{number_matches}"
     # self.feedback = "Exact: #{exact_matches}, number only: #{number_matches}"
     feedback = []
     guess_code.each_with_index do |number, i|

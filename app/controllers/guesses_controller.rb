@@ -4,11 +4,9 @@ class GuessesController < ApplicationController
     @guess = @game.guesses.build(guess_params)
 
     if @game.over?
-      @game.update(is_over: true)
       redirect_to game_path(@game), notice: "Game over! The secret code was #{@game.secret_code}"
     elsif @guess.save
       if @game.won?
-        @game.update(is_over: true)
         redirect_to game_path(@game), notice: "Congratulations! You've guessed the code!"
       else
         redirect_to game_path(@game)
