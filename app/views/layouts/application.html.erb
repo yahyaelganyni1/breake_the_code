@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>BreakeTheCode</title>
+
+<head>
+    <title>Break The Code</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
-  <body>
-    <p class="notice"><%= notice %></p>
-    <%= yield %>
-  </body>
+</head>
+
+<body>
+    <div class="app-container">
+        <% if notice %>
+        <div class="notification"><%= notice %></div>
+        <% end %>
+        <%= yield %>
+    </div>
+</body>
+
 </html>

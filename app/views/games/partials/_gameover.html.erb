@@ -1,14 +1,17 @@
 <% if @game.won? %>
-  <h2 class="game-page_over_message">
-    <%= notice %>
-  </h2>
+<div class="game-page_over_message success">
+    <h2>Congratulations! 🎉</h2>
+    <p><%= notice %></p>
+</div>
 <% end %>
-<% if @game.over? %>
-  <h2 class="game-page_over_message">
-    Game Over! the code was <%= @game.secret_code %>.
-  <%end%>
-  <% if @game.won? || @game.over? %>
-    <div class="game-page_over">
-      <%= link_to "Play Again", new_game_path, class: "game-page_over_button" %>
-    </div>
-  <% end %>
+<% if @game.over? && !@game.won? %>
+<div class="game-page_over_message">
+    <h2>Game Over!</h2>
+    <p>The secret code was <span class="secret-code"><%= @game.secret_code %></span></p>
+</div>
+<% end %>
+<% if @game.won? || @game.over? %>
+<div class="game-page_over">
+    <%= link_to "Play Again", new_game_path, class: "game-page_over_button" %>
+</div>
+<% end %>

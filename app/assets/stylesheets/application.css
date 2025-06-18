@@ -14,6 +14,34 @@
  *= require_self
  */
 
+:root {
+  --primary: #6a26cd;
+  --primary-dark: #4a1b91;
+  --secondary: #ff7940;
+  --dark: #111827;
+  --light: #f9fafb;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --border-radius-sm: 0.25rem;
+  --border-radius: 0.5rem;
+  --border-radius-lg: 1rem;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -97,7 +125,7 @@ ul {
   text-decoration: none;
 }
 
-/* reomve default button styles */
+/* remove default button styles */
 button {
   background-color: transparent;
   border: none;
@@ -106,7 +134,6 @@ button {
 }
 
 /* remove style from input type button */
-
 input[type='button'] {
   background-color: transparent;
   border: none;
@@ -117,15 +144,242 @@ input[type='button'] {
 /* Add your custom styles below this line */
 
 body {
-  line-height: 1;
-  background-color: #cc2936;
+  line-height: 1.5;
+  background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+  min-height: 100vh;
+  color: var(--light);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+      circle at 25% 25%,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px;
+  z-index: -1;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    var(--primary) 0%,
+    transparent 20%,
+    transparent 80%,
+    var(--secondary) 100%
+  );
+  opacity: 0.1;
+  z-index: -1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+  color: var(--light);
+  line-height: 1.2;
+}
+
+strong {
+  font-weight: 600;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.notification {
+  background-color: var(--primary);
+  color: var(--light);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(106, 38, 205, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(106, 38, 205, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(106, 38, 205, 0.5);
+  }
+}
+
+button,
+.button,
+input[type='submit'] {
+  background: linear-gradient(to right, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease-in-out;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+button::before,
+.button::before,
+input[type='submit']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease-in-out;
+  z-index: -1;
+}
+
+button:hover,
+.button:hover,
+input[type='submit']:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(to right, var(--primary-dark), var(--primary));
+}
+
+button:hover::before,
+.button:hover::before,
+input[type='submit']:hover::before {
+  left: 100%;
+}
+
+button:disabled,
+.button:disabled,
+input[type='submit']:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secret-code {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: var(--secondary);
+  background: linear-gradient(
+    45deg,
+    var(--secondary),
+    var(--primary),
+    var(--secondary)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 3s linear infinite;
+  padding: 0 0.2em;
+}
+
+.game-page_over_message {
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin: 1.5rem 0;
+  border-left: 4px solid var(--primary);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.game-page_over_message h2 {
+  margin-bottom: 0.5rem;
+  color: var(--light);
+  font-weight: 600;
+}
+
+.game-page_over_message.success {
+  border-left: 4px solid var(--success);
+}
+
+.game-page_over_message.success h2 {
+  color: var(--success);
+}
+
+@keyframes textShine {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .right-number-right-place {
-  width: 20px; /* Adjust the size as needed */
-  height: 20px; /* Adjust the size as needed */
+  width: 24px;
+  height: 24px;
   position: relative;
-  border: 1px solid #00ff00; /* Adjust the border color as needed */
+  background-color: var(--success);
+  border-radius: 50%;
+  margin: 0 5px;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  animation: pulse 2s infinite;
 }
 
 .right-number-right-place::before {
@@ -134,16 +388,20 @@ body {
   top: 50%;
   left: 50%;
   width: 8px;
-  height: 14px;
-  border-bottom: 2px solid #00ff00;
-  border-right: 2px solid #00ff00;
-  transform: translate(-50%, -65%) rotate(32deg);
+  height: 13px;
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
+  transform: translate(-50%, -60%) rotate(45deg);
 }
 
 .right-number-wrong-place {
-  width: 20px; /* Adjust the size as needed */
-  height: 20px; /* Adjust the size as needed */
+  width: 24px;
+  height: 24px;
   position: relative;
+  background-color: var(--warning);
+  border-radius: 50%;
+  margin: 0 5px;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
 }
 
 .right-number-wrong-place::before {
@@ -151,17 +409,20 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 8px;
-  height: 14px;
-  border-bottom: 2px solid #00ff00;
-  border-right: 2px solid #00ff00;
-  transform: translate(-50%, -65%) rotate(32deg);
+  width: 12px;
+  height: 2px;
+  background-color: white;
+  transform: translate(-50%, -50%);
 }
 
 .wrong {
-  width: 20px; /* Adjust the size as needed */
-  height: 20px; /* Adjust the size as needed */
+  width: 24px;
+  height: 24px;
   position: relative;
+  background-color: var(--error);
+  border-radius: 50%;
+  margin: 0 5px;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }
 
 .wrong::before,
@@ -170,9 +431,9 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 14px; /* Adjust the size as needed */
-  height: 2px; /* Adjust the thickness as needed */
-  background-color: red; /* Adjust the color as needed */
+  width: 12px;
+  height: 2px;
+  background-color: white;
 }
 
 .wrong::before {
@@ -181,4 +442,16 @@ body {
 
 .wrong::after {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }

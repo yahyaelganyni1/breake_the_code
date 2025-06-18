@@ -1,27 +1,43 @@
 <div class="home-page">
-  <div class="home-page-about">
-    <h1 class="home-page-about_title">Welcome to Break the Code!</h1>
-    <p class="home-page-about_description">
-      Break the Code is an engaging and challenging game where your objective is to guess a secret 4-digit code. Each digit in the code is unique and ranges from 1 to 9. After each guess, you'll receive feedback to help you zero in on the correct code: 
-    </p>
-    <ul class="home-page-about_feedback">
-      <li class="home-page-about_feedback_list_item">
-        <strong>Right Number, Right Place:</strong>
-        <div class="right-number-right-place"></div>
-        You guessed a number correctly and it is in the correct position.</li>
-      <li class="home-page-about_feedback_list_item">
-        <strong>Right Number, Wrong Place:</strong>
-        <div class="right-number-wrong-place"></div>
-        You guessed a number correctly, but it is in the wrong position.</li>
-      <li class="home-page-about_feedback_list_item">
-        <strong>Wrong:</strong>
-        <div class="wrong"></div>
-        The number you guessed is not in the code at all.</li>
-    </ul>
-  </div>
-  <div class="home-page-start">
-    <%= form_with model: @game, local: true do |form| %>
-      <%= form.submit "Start New Game", class: "home-page-start_button" %>
-    <% end %>
-  </div>
+    <div class="logo-container">
+        <h1 class="game-logo">BREAK THE CODE</h1>
+        <div class="logo-glow"></div>
+    </div>
+
+    <div class="home-page-about">
+        <h1 class="home-page-about_title">Welcome to Break the Code!</h1>
+        <p class="home-page-about_description">
+            Break the Code is an engaging and challenging game where your objective is to guess a secret 4-digit code. Each digit in the code is unique and ranges from 1 to 9. After each guess, you'll receive feedback to help you zero in on the correct code:
+        </p>
+        <ul class="home-page-about_feedback">
+            <li class="home-page-about_feedback_list_item">
+                <strong>Right Number, Right Place:</strong>
+                <div class="right-number-right-place"></div>
+                <span>You guessed a number correctly and it is in the correct position.</span>
+            </li>
+            <li class="home-page-about_feedback_list_item">
+                <strong>Right Number, Wrong Place:</strong>
+                <div class="right-number-wrong-place"></div>
+                <span>You guessed a number correctly, but it is in the wrong position.</span>
+            </li>
+            <li class="home-page-about_feedback_list_item">
+                <strong>Wrong:</strong>
+                <div class="wrong"></div>
+                <span>The number you guessed is not in the code at all.</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="home-page-start">
+        <%= form_with model: @game, local: true do |form| %>
+        <%= form.submit "Start New Game", class: "home-page-start_button" %>
+        <% end %>
+        <div class="start-button-glow"></div>
+    </div>
+
+    <div class="decoration-elements">
+        <div class="deco-circle circle1"></div>
+        <div class="deco-circle circle2"></div>
+        <div class="deco-circle circle3"></div>
+    </div>
 </div>

@@ -1,58 +1,67 @@
 <div class="game-page">
-  <h1 class="game-page_title">Break the Code</h1>
-  <%= form_with model: [@game, @guess], local: true, class: "game-page_form" do |form| %>
+    <h1 class="game-page_title">Break the Code</h1>
+    <%= form_with model: [@game, @guess], local: true, class: "game-page_form" do |form| %>
     <div>
-      <%=
-        form.number_field :code, pattern: "[0-9]+",
-         title: "Please enter numbers only",
-          oninput: "checkDuplicate(this)",
-           required: true, minlength: 4, maxlength: 4,
-            disabled: @game.over? || @game.won?,
-            class: "game-page_form_input",
-            placeholder: "X X X X",
-            autofocus: true
+        <div class="input-container">
+            <%=
+          form.number_field :code, pattern: "[0-9]+",
+           title: "Please enter numbers only",
+            oninput: "checkDuplicate(this)",
+             required: true, minlength: 4, maxlength: 4,
+              disabled: @game.over? || @game.won?,
+              class: "game-page_form_input",
+              placeholder: "X X X X",
+              autofocus: true
+             %>
+            <div class="input-hint">Enter 4 unique digits (1-9)</div>
+        </div>
+        <script>
+            function checkDuplicate(input) {
+                const code = input.value;
+                const numbers = code.split("");
+                const uniqueNumbers = [...new Set(numbers)];
+                const validLength = code.length === 4;
+                const duplicateError = uniqueNumbers.length === numbers.length ? "" : "Duplicate numbers are not allowed.";
+                const lengthError = validLength ? "" : "Please enter exactly 4 numbers.";
+                input.setCustomValidity(duplicateError + lengthError);
 
-           %>
-      <script>
-        function checkDuplicate(input) {
-          const code = input.value;
-          const numbers = code.split("");
-          const uniqueNumbers = [...new Set(numbers)];
-          const validLength = code.length === 4;
-          const duplicateError = uniqueNumbers.length === numbers.length ? "" : "Duplicate numbers are not allowed.";
-          const lengthError = validLength ? "" : "Please enter exactly 4 numbers.";
-          input.setCustomValidity(duplicateError + lengthError);
-        }
-      </script>
+                // Add animation effect when typing
+                if (input.value.length > 0) {
+                    input.classList.add('has-value');
+                } else {
+                    input.classList.remove('has-value');
+                }
+            }
+        </script>
     </div>
     <%= form.submit "Submit Guess", disabled: @game.over? || @game.won?, class: "game-page_form_button" %>
-  <% end %>
-  <%= render "games/partials/gameover", game: @game %>
-  <% if @game.guesses.any? %>
+    <% end %>
+    <%= render "games/partials/gameover", game: @game %>
+    <% if @game.guesses.any? %>
     <h2>Your Guesses</h2>
     <ol class="game-page_guesses">
-      <% @game.guesses.each do |guess| %>
+        <% @game.guesses.each do |guess| %>
         <li class="game-page_guesses_guess_list_item">
-          <p class="game-page_guesses_guess_list_item_the_guess">
-            -<%= @game.guesses.index(guess) + 1 %>-   <%= guess.code %>
-          </p>
-          <div class="game-page_guesses_feedback">
-            <% guess.feedback.each_char do |number| %>
-              <p class="game-page_guesses_feedback_p">
-                <% if number == "1" %>
-                  <div class="right-number-right-place"></div>
+            <p class="game-page_guesses_guess_list_item_the_guess">
+                -<%= @game.guesses.index(guess) + 1 %>- <%= guess.code %>
+            </p>
+            <div class="game-page_guesses_feedback">
+                <% guess.feedback.each_char.with_index do |number, index| %>
+                <p class="game-page_guesses_feedback_p" style="animation-delay: <%= index * 0.1 %>s">
+                    <% if number == "1" %>
+                <div class="right-number-right-place" title="Right number, right place"></div>
                 <% end %>
                 <% if number == "2" %>
-                  <div class="right-number-wrong-place"></div>
+                <div class="right-number-wrong-place" title="Right number, wrong place"></div>
                 <% end %>
                 <% if number == "3" %>
-                  <div class="wrong"></div>
+                <div class="wrong" title="Wrong number"></div>
                 <% end %>
-              </p>
-            <% end %>
-          </div>
+                </p>
+                <% end %>
+            </div>
         </li>
-      <% end %>
+        <% end %>
     </ol>
-  <% end %>
+    <% end %>
 </div>
