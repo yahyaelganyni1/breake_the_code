@@ -213,6 +213,19 @@ strong {
   margin: 0 auto;
   padding: 1rem;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0.75rem;
+  }
+
+  :root {
+    --border-radius-lg: 0.75rem;
+    --border-radius: 0.375rem;
+  }
 }
 
 .notification {
@@ -409,10 +422,11 @@ input[type='submit']:disabled {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 12px;
-  height: 2px;
-  background-color: white;
-  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 14px;
+  border-bottom: 2px solid #00ff00;
+  border-right: 2px solid #00ff00;
+  transform: translate(-50%, -65%) rotate(32deg);
 }
 
 .wrong {
@@ -423,6 +437,26 @@ input[type='submit']:disabled {
   border-radius: 50%;
   margin: 0 5px;
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+/* Mobile adjustments for feedback indicators */
+@media (max-width: 768px) {
+  .right-number-right-place,
+  .right-number-wrong-place,
+  .wrong {
+    width: 20px;
+    height: 20px;
+    margin: 0 3px;
+  }
+
+  .right-number-right-place::before {
+    width: 6px;
+    height: 10px;
+  }
+
+  .right-number-wrong-place::before {
+    font-size: 14px;
+  }
 }
 
 .wrong::before,

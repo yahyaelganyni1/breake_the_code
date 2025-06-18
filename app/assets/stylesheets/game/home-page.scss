@@ -306,41 +306,98 @@
 
 @media (max-width: 768px) {
   .home-page {
+    padding: 1rem 0;
+
     .logo-container {
+      margin-bottom: 1.5rem;
+
       .game-logo {
-        font-size: 2.2rem;
+        font-size: 2rem;
       }
     }
 
+    .home-page-about {
+      padding: 1.5rem;
+      margin: 0.5rem;
+      max-width: 95%;
+    }
+
     .home-page-about_title {
-      font-size: 2em;
+      font-size: 1.8em;
+      margin-bottom: 1rem;
+
+      &::after {
+        width: 70px;
+        margin: 0.3rem auto;
+      }
     }
 
     .home-page-about_description {
-      font-size: 1em;
-      width: 95%;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      width: 100%;
     }
 
     .home-page-about_feedback {
-      width: 95%;
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
 
       .home-page-about_feedback_list_item {
+        padding: 0.5rem 0;
         flex-direction: column;
         align-items: flex-start;
 
         strong {
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.4rem;
+          display: block;
+          min-width: auto;
         }
 
         div {
           margin-left: 0;
-          margin-top: 0.5rem;
+          margin-top: 0.4rem;
         }
 
         span {
-          margin-top: 0.5rem;
+          margin-top: 0.4rem;
+          font-size: 0.9em;
         }
       }
+    }
+
+    .home-page-start {
+      margin: 1.5rem auto 0.5rem;
+
+      .home-page-start_button {
+        font-size: 1.3em;
+        padding: 0.8rem 2rem;
+      }
+    }
+  }
+}
+
+/* Small phone screens */
+@media (max-width: 375px) {
+  .home-page {
+    .logo-container {
+      .game-logo {
+        font-size: 1.7rem;
+      }
+    }
+
+    .home-page-about_title {
+      font-size: 1.5em;
+    }
+
+    .home-page-about_feedback {
+      padding: 0.75rem;
+    }
+
+    .home-page-start_button {
+      font-size: 1.1em !important;
+      padding: 0.7rem 1.5rem !important;
     }
   }
 }
