@@ -43,7 +43,8 @@
         <% @game.guesses.each do |guess| %>
         <li class="game-page_guesses_guess_list_item">
             <p class="game-page_guesses_guess_list_item_the_guess">
-                -<%= @game.guesses.index(guess) + 1 %>- <%= guess.code %>
+                <span class="guess-number"><%= @game.guesses.index(guess) + 1 %></span>
+                <span class="guess-code"><%= guess.code %></span>
             </p>
             <div class="game-page_guesses_feedback">
                 <% guess.feedback.each_char.with_index do |number, index| %>
