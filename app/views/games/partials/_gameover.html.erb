@@ -1,4 +1,4 @@
-  <% if @game.won? %>
+<% if @game.won? %>
   <h2 class="game-page_over_message">
     <%= notice %>
   </h2>
@@ -7,3 +7,8 @@
   <h2 class="game-page_over_message">
     Game Over! the code was <%= @game.secret_code %>.
   <%end%>
+  <% if @game.won? || @game.over? %>
+    <div class="game-page_over">
+      <%= link_to "Play Again", new_game_path, class: "game-page_over_button" %>
+    </div>
+  <% end %>

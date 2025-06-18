@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class GuessesControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
+  # Test "the truth" do
   #   assert true
   # end
 end
