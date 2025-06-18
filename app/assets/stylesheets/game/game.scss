@@ -117,24 +117,13 @@
           opacity: 1;
         }
       }
-
       &.has-value {
         letter-spacing: 0.35em;
         color: var(--primary-dark);
         font-weight: 700;
-        animation: pulse-light 1.5s infinite;
-      }
-    }
-
-    @keyframes pulse-light {
-      0% {
         background-color: rgba(255, 255, 255, 0.95);
-      }
-      50% {
-        background-color: rgba(255, 121, 64, 0.1);
-      }
-      100% {
-        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: var(--shadow-sm), 0 0 0 2px rgba(var(--primary), 0.1),
+          inset 0 2px 4px rgba(0, 0, 0, 0.06);
       }
     }
 
