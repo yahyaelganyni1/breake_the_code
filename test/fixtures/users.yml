@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                :bigint           not null, primary key
+#  device_identifier :string
+#  last_active       :datetime
+#  nickname          :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
+one:
+  device_identifier: MyString
+  nickname: MyString
+  last_active: 2025-06-23 14:47:38
+
+two:
+  device_identifier: MyString
+  nickname: MyString
+  last_active: 2025-06-23 14:47:38

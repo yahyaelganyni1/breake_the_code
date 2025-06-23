@@ -12,6 +12,7 @@
 #  updated_at  :datetime         not null
 #
 class Game < ApplicationRecord
+  belongs_to :user, optional: true
   has_many :guesses, dependent: :destroy
   before_create :generate_secret_code
   after_create :set_start_time
