@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_23_114738) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_23_115933) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_23_114738) do
     t.boolean "is_over", default: false
     t.datetime "start_time"
     t.datetime "end_time"
+    t.string "token"
+    t.index ["token"], name: "index_games_on_token", unique: true
   end
 
   create_table "guesses", force: :cascade do |t|

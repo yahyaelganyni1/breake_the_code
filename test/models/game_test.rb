@@ -8,8 +8,13 @@
 #  is_over     :boolean          default(FALSE)
 #  secret_code :string
 #  start_time  :datetime
+#  token       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_games_on_token  (token) UNIQUE
 #
 require "test_helper"
 
