@@ -7,7 +7,6 @@ class GamesController < ApplicationController
     @game = Game.new(game_params)
 
     if @game.save
-      p "Game created with token: #{@game.token}"
       redirect_to game_path(@game)
       # debugger
     else
