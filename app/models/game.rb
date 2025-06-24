@@ -6,6 +6,7 @@
 #  attempts    :integer
 #  end_time    :datetime
 #  is_over     :boolean          default(FALSE)
+#  metadata    :jsonb
 #  secret_code :string
 #  start_time  :datetime
 #  token       :string
@@ -22,6 +23,22 @@ class Game < ApplicationRecord
   before_create :generate_token
   before_create :generate_secret_code
   after_create :set_start_time
+
+  # Initialize metadata as empty hash if nil
+  def metadata
+    self[:metadata] ||= {}
+  end
+
+  # Helper method to store metadata
+  def set_metadata(key, value)
+    self.metadata = metadata.merge(key.to_s => value)
+    save
+  end
+
+  # Helper method to get metadata
+  def get_metadata(key)
+    metadata[key.to_s]
+  end
 
   def to_param
     token

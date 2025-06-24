@@ -6,6 +6,7 @@
 #  attempts    :integer
 #  end_time    :datetime
 #  is_over     :boolean          default(FALSE)
+#  metadata    :jsonb
 #  secret_code :string
 #  start_time  :datetime
 #  token       :string
