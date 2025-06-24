@@ -74,3 +74,4 @@ gem 'sassc-rails'
 
 
 gem "erb-formatter", "~> 0.7.2"
+gem 'geocoder'
