@@ -19,6 +19,7 @@
 #  index_games_on_token  (token) UNIQUE
 #
 class Game < ApplicationRecord
+
   belongs_to :user, optional: true
   has_many :guesses, dependent: :destroy
   before_create :generate_token
@@ -74,6 +75,18 @@ class Game < ApplicationRecord
 
   def set_start_time
     update_column(:start_time, Time.current)
+  end
+
+  def calculate_score
+    return 0 unless is_over
+
+    time_taken = end_time - start_time
+    base_score = 1000
+    penalty_per_attempt = 50
+    penalty_for_time = (time_taken / 60).to_i * 10
+
+    score = base_score - (penalty_per_attempt * attempts) - penalty_for_time
+    score.positive? ? score : 0
   end
 
 
