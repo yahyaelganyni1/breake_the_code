@@ -11,6 +11,7 @@
 #  secret_code :string
 #  start_time  :datetime
 #  token       :string
+#  winner_name :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -19,13 +20,16 @@
 #  index_games_on_token  (token) UNIQUE
 #
 class Game < ApplicationRecord
-
   belongs_to :user, optional: true
   has_many :guesses, dependent: :destroy
   before_create :generate_token
   before_create :generate_secret_code
   after_create :set_start_time
-  # after_save :update_game_status
+
+  scope :top10, -> {
+    where.not(score: nil).order(score: :desc).limit(10)
+  }
+  # Ex:- scope :active, -> {where(:active => true)}
   # Initialize metadata as empty hash if nil
   def metadata
     self[:metadata] ||= {}
@@ -59,25 +63,25 @@ class Game < ApplicationRecord
     end
   end
 
+
+    def check_game_over
+      p 'checking if game is over0000'
+      last_guess = guesses.last
+
+      if last_guess.present?
+        if last_guess.code == secret_code || guesses.count >= 10
+            update_columns(
+              is_over: true,
+              end_time: Time.current,
+              score: calculate_score_value,
+              attempts: guesses.count
+            )
+        end
+      end
+    end
+
   private
 
-  def update_game_status
-    p "Updating game status for game #{id} - is_over: #{is_over}, over?: #{over?}, won?: #{won?}"
-    # Skip this method if we're already processing an update to is_over
-    # to prevent infinite callback loops
-    return if saved_changes.key?('is_over') && is_over
-    p "Game status update triggered0000 for game #{id}"
-    p "0000over?: #{over?}, won?: #{won?}, guesses count: #{guesses.count}"
-    if over? || won?
-      # Combine both updates into one call
-      update_columns(
-        is_over: true,
-        end_time: Time.current,
-        attempts: guesses.count,
-        score: calculate_score_value
-      )
-    end
-  end
 
   # Create a separate method for score calculation that doesn't depend on is_over field
   def calculate_score_value
@@ -97,6 +101,8 @@ class Game < ApplicationRecord
   end
 
   def generate_token
+    # debugger
+    p 'token generated00'
     self.token = SecureRandom.urlsafe_base64(8)
   end
 

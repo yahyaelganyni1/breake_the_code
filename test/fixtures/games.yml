@@ -11,6 +11,7 @@
 #  secret_code :string
 #  start_time  :datetime
 #  token       :string
+#  winner_name :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
