@@ -22,3 +22,6 @@ console_command = '/rails/bin/rails console'
   cpu_kind = 'shared'
   cpus = 1
   memory_mb = 1024
+
+[processes]
+  app = "bin/rails server -b 0.0.0.0 -p 3000"
