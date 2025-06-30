@@ -76,3 +76,5 @@ gem 'sassc-rails'
 gem "erb-formatter", "~> 0.7.2"
 gem 'geocoder'
 gem 'browser'
+
+gem "dockerfile-rails", ">= 1.7", :group => :development
