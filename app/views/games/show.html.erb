@@ -4,8 +4,8 @@
     <div>
         <div class="input-container">
             <%=
-          form.number_field :code, pattern: "[0-9]+",
-           title: "Please enter numbers only",
+          form.number_field :code, pattern: "[1-9]+",
+           title: "Please enter numbers 1-9 only",
             oninput: "checkDuplicate(this)",
              required: true, minlength: 4, maxlength: 4,
               disabled: @game.over? || @game.won?,
@@ -13,7 +13,7 @@
               placeholder: "X X X X",
               autofocus: true
              %>
-            <div class="input-hint">Enter 4 unique digits (1-9)</div>
+            <div class="input-hint">Enter 4 unique digits (1-9 only)</div>
         </div>
         <script>
             function checkDuplicate(input) {
@@ -23,7 +23,10 @@
                 const validLength = code.length === 4;
                 const duplicateError = uniqueNumbers.length === numbers.length ? "" : "Duplicate numbers are not allowed.";
                 const lengthError = validLength ? "" : "Please enter exactly 4 numbers.";
-                input.setCustomValidity(duplicateError + lengthError);
+                const hasZero = code.includes('0');
+                const zeroError = hasZero ? "Zero is not allowed. Use digits 1-9 only." : "";
+
+                input.setCustomValidity(duplicateError + lengthError + zeroError);
 
                 // Add animation effect when typing
                 if (input.value.length > 0) {
