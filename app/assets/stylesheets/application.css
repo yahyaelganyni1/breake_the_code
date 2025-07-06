@@ -513,6 +513,8 @@ input[type='submit']:disabled {
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
   border: 1px solid var(--gray-700);
+  font-size: 0.85em;
+  padding: 2px 8px;
 }
 
 .github-star-btn:hover {
@@ -525,6 +527,8 @@ input[type='submit']:disabled {
 .github-star-btn svg {
   width: 16px;
   height: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
 }
 
 @media (max-width: 768px) {
