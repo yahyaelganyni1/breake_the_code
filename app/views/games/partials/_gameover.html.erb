@@ -203,6 +203,10 @@
 <% end %>
 <% if @game.won? || @game.over? %>
 <div class="game-page_over">
-    <%= link_to "Play Again", new_game_path, class: "game-page_over_button" %>
+    <%= form_with url: games_path, method: :post, local: true, style: "display:contents" do |f| %>
+        <%= f.hidden_field :difficulty, name: "game[difficulty]", value: @game.difficulty %>
+        <%= f.submit "New Game", class: "game-page_over_button" %>
+    <% end %>
+    <%= link_to "Home", root_path, class: "game-page_over_button game-page_over_button--secondary" %>
 </div>
 <% end %>
