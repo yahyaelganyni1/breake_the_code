@@ -139,6 +139,192 @@
   }
 }
 
+.home-leaderboard {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem 1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--shadow);
+}
+
+.home-leaderboard__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  text-align: center;
+  margin-bottom: 0.875rem;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    margin: 0.4rem auto 0;
+    border-radius: 2px;
+  }
+}
+
+.home-leaderboard__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.home-leaderboard__row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease, background 0.2s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateX(3px);
+      background: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  &:first-child {
+    border-color: rgba(255, 121, 64, 0.35);
+    box-shadow: 0 0 12px rgba(255, 121, 64, 0.15);
+  }
+}
+
+.home-leaderboard__rank {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--secondary);
+  letter-spacing: 0.05em;
+}
+
+.home-leaderboard__name {
+  font-size: 0.95rem;
+  color: var(--light);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-leaderboard__score {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(120deg, #b78cff, var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home-leaderboard__difficulty {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+
+  &--easy {
+    color: #6ee7b7;
+  }
+
+  &--normal {
+    color: #b78cff;
+  }
+
+  &--hard {
+    color: #ff8a5b;
+  }
+}
+
+.difficulty-picker {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 0.875rem 0.875rem;
+  margin: 0 0 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.difficulty-picker__legend {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0 0.5rem;
+}
+
+.difficulty-picker__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.difficulty-picker__option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius);
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:has(input:checked) {
+    border-color: var(--secondary);
+    background: rgba(255, 121, 64, 0.08);
+  }
+
+  input[type="radio"] {
+    accent-color: var(--secondary);
+  }
+}
+
+.difficulty-picker__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.2;
+}
+
+.difficulty-picker__name {
+  font-weight: 700;
+  color: var(--light);
+  font-size: 0.95rem;
+}
+
+.difficulty-picker__meta {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.04em;
+}
+
+.home-leaderboard__empty {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0.5rem 0 0.25rem;
+  line-height: 1.45;
+}
+
 .home-cta {
   display: flex;
   flex-direction: column;
@@ -290,7 +476,8 @@
     padding: 1.5rem 0 2rem;
   }
 
-  .home-howto {
+  .home-howto,
+  .home-leaderboard {
     padding: 1.5rem 1.5rem;
   }
 

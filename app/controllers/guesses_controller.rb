@@ -4,9 +4,8 @@ class GuessesController < ApplicationController
     @guess = @game.guesses.build(guess_params)
 
     if @guess.save
-      redirect_to game_path(@game)
       @game.check_game_over
-      p "game token: #{@game.token}"
+      redirect_to game_path(@game)
     else
       redirect_to game_path(@game), alert: 'There was a problem with your guess.'
     end

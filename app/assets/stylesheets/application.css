@@ -532,82 +532,113 @@ input[type='submit']:disabled {
 }
 
 .social-sharing {
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem 1rem 1rem;
+  border-radius: var(--border-radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   text-align: center;
 }
 
 .social-sharing-text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--secondary);
-  margin-bottom: 0.875rem;
+  margin: 0 0 0.875rem;
   font-family: 'Orbitron', sans-serif;
 }
 
-.social-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.social-btn {
+.share-native-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 320px;
+  padding: 0.75rem 1.25rem;
+  margin: 0 auto 1rem;
   border: none;
   border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
   font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: var(--shadow-sm);
-  min-height: 44px;
+  box-shadow: 0 4px 14px -2px rgba(124, 58, 237, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-.social-btn:hover {
+.share-native-btn:hover {
   transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 22px -4px rgba(124, 58, 237, 0.55);
+}
+
+.share-native-btn[hidden] {
+  display: none;
+}
+
+.share-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  justify-content: center;
+}
+
+.share-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  background: var(--gray-700);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  padding: 0;
+}
+
+.share-chip:hover,
+.share-chip:focus-visible {
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.1);
   box-shadow: var(--shadow);
+  color: #fff;
+  outline: none;
 }
 
-.facebook-btn {
-  background: #1877f2;
-  color: white;
+.share-chip:active {
+  transform: translateY(-1px) scale(1);
 }
 
-.facebook-btn:hover {
-  background: #166fe5;
-  color: white;
+.share-chip svg {
+  display: block;
 }
 
-.twitter-btn {
-  background: #1da1f2;
-  color: white;
-}
-
-.twitter-btn:hover {
-  background: #0d95e8;
-  color: white;
-}
-
-.social-btn svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
+.share-chip.whatsapp  { background: #25d366; }
+.share-chip.x         { background: #000; }
+.share-chip.facebook  { background: #1877f2; }
+.share-chip.telegram  { background: #229ed9; }
+.share-chip.reddit    { background: #ff4500; }
+.share-chip.linkedin  { background: #0a66c2; }
+.share-chip.email     { background: var(--gray-600); }
+.share-chip.copy      { background: var(--primary); }
 
 @media (max-width: 480px) {
-  .social-buttons {
-    flex-direction: column;
-    align-items: stretch;
+  .social-sharing {
+    padding: 1rem 0.75rem;
   }
 
-  .social-btn {
-    width: 100%;
-    justify-content: center;
+  .share-chip {
+    width: 42px;
+    height: 42px;
   }
 }
 

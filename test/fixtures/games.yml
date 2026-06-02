@@ -1,29 +1,12 @@
-# == Schema Information
-#
-# Table name: games
-#
-#  id          :bigint           not null, primary key
-#  attempts    :integer
-#  end_time    :datetime
-#  is_over     :boolean          default(FALSE)
-#  metadata    :jsonb
-#  score       :integer
-#  secret_code :string
-#  start_time  :datetime
-#  token       :string
-#  winner_name :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#
-# Indexes
-#
-#  index_games_on_token  (token) UNIQUE
-#
-
+# Minimal fixtures kept generic; model tests build games directly to control timing/state.
 one:
-  secret_code: MyString
+  secret_code: "1234"
+  difficulty: normal
   attempts: 1
+  hints_used: 0
 
 two:
-  secret_code: MyString
+  secret_code: "1234"
+  difficulty: normal
   attempts: 1
+  hints_used: 0

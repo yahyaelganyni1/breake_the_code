@@ -2,25 +2,56 @@
     <header class="game-header">
         <h1 class="game-page_title">Break the Code</h1>
         <% guess_count = @game.guesses.size %>
-        <% unless @game.over? || @game.won? %>
-        <p class="game-header__meta">Guess <span><%= guess_count + 1 %></span></p>
-        <% end %>
+        <div class="game-header__badges">
+            <span class="difficulty-badge difficulty-badge--<%= @game.difficulty %>"><%= @game.difficulty.capitalize %></span>
+            <% unless @game.over? || @game.won? %>
+                <span class="game-header__meta">Guess <strong><%= guess_count + 1 %></strong> / <%= @game.max_attempts %></span>
+            <% end %>
+        </div>
     </header>
 
     <%= render "games/partials/gameover", game: @game %>
 
     <% unless @game.over? || @game.won? %>
+    <% pool_max = @game.digit_pool.max %>
+    <% pool_min = @game.digit_pool.min %>
+    <% code_length = @game.code_length %>
+
+    <% if @game.revealed_hints.any? %>
+    <section class="hint-display" aria-label="Revealed hints">
+        <p class="hint-display__label">Revealed</p>
+        <ol class="hint-display__slots">
+            <% (0...code_length).each do |pos| %>
+                <% hint = @game.revealed_hints.find { |h| h["position"] == pos } %>
+                <li class="hint-display__slot <%= 'hint-display__slot--revealed' if hint %>">
+                    <%= hint ? hint["digit"] : "?" %>
+                </li>
+            <% end %>
+        </ol>
+    </section>
+    <% end %>
+
     <%= form_with model: [@game, @guess], local: true, class: "game-page_form", data: { controller: "code-input" } do |form| %>
-        <div class="code-input" role="group" aria-label="Enter your 4-digit guess">
-            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="0" aria-label="Digit 1" autofocus>
-            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="1" aria-label="Digit 2">
-            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="2" aria-label="Digit 3">
-            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="3" aria-label="Digit 4">
+        <div class="code-input" role="group" aria-label="Enter your <%= code_length %>-digit guess">
+            <% code_length.times do |i| %>
+                <input type="text" inputmode="numeric" pattern="[<%= pool_min %>-<%= pool_max %>]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="<%= i %>" aria-label="Digit <%= i + 1 %>" <%= 'autofocus' if i.zero? %>>
+            <% end %>
             <%= form.hidden_field :code, id: "guess_code" %>
         </div>
-        <p class="code-input__hint" id="code-hint">Use digits 1–9 only. No repeats.</p>
+        <p class="code-input__hint" id="code-hint">Use digits <%= pool_min %>–<%= pool_max %> only. No repeats.</p>
 
-        <%= form.submit "Submit Guess", class: "game-page_form_button", disabled: true, id: "submit-guess-btn" %>
+        <div class="game-actions">
+            <%= form.submit "Submit Guess", class: "game-page_form_button", disabled: true, id: "submit-guess-btn" %>
+            <button type="button"
+                    class="hint-button"
+                    id="hint-button"
+                    data-game-token="<%= @game.token %>"
+                    data-hints-remaining="<%= @game.hints_remaining %>"
+                    <%= 'disabled' if @game.hints_remaining <= 0 %>>
+                Reveal a digit
+                <span class="hint-button__counter">(<span id="hints-remaining"><%= @game.hints_remaining %></span> left · −<%= Game::HINT_PENALTY %>)</span>
+            </button>
+        </div>
     <% end %>
 
     <script>
@@ -29,6 +60,10 @@
             const hiddenInput = document.getElementById('guess_code');
             const submitBtn = document.getElementById('submit-guess-btn');
             const hint = document.getElementById('code-hint');
+            const codeLength = <%= code_length %>;
+            const poolMin = <%= pool_min %>;
+            const poolMax = <%= pool_max %>;
+            const digitRegex = new RegExp('[^' + poolMin + '-' + poolMax + ']', 'g');
             if (!cells.length || !hiddenInput || !submitBtn) return;
 
             function currentCode() {
@@ -39,19 +74,22 @@
                 const code = currentCode();
                 const digits = code.split('');
                 const unique = new Set(digits);
-                const allFilled = code.length === 4;
+                const allFilled = code.length === codeLength;
                 const noDuplicates = unique.size === digits.length;
-                const noZero = !code.includes('0');
-                const valid = allFilled && noDuplicates && noZero;
+                const validRange = digits.every(d => {
+                    const n = parseInt(d, 10);
+                    return n >= poolMin && n <= poolMax;
+                });
+                const valid = allFilled && noDuplicates && validRange;
 
                 hiddenInput.value = code;
                 submitBtn.disabled = !valid;
 
                 if (!allFilled) {
-                    hint.textContent = 'Use digits 1–9 only. No repeats.';
+                    hint.textContent = 'Use digits ' + poolMin + '–' + poolMax + ' only. No repeats.';
                     hint.classList.remove('code-input__hint--error');
-                } else if (!noZero) {
-                    hint.textContent = 'Zero is not allowed. Use digits 1–9.';
+                } else if (!validRange) {
+                    hint.textContent = 'Only digits ' + poolMin + '–' + poolMax + ' allowed.';
                     hint.classList.add('code-input__hint--error');
                 } else if (!noDuplicates) {
                     hint.textContent = 'Each digit must be unique.';
@@ -64,7 +102,7 @@
 
             cells.forEach((cell, idx) => {
                 cell.addEventListener('input', (e) => {
-                    const v = cell.value.replace(/[^1-9]/g, '');
+                    const v = cell.value.replace(digitRegex, '');
                     cell.value = v.slice(-1);
                     if (cell.value && idx < cells.length - 1) {
                         cells[idx + 1].focus();
@@ -92,7 +130,7 @@
 
                 cell.addEventListener('paste', (e) => {
                     e.preventDefault();
-                    const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^1-9]/g, '').slice(0, 4);
+                    const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(digitRegex, '').slice(0, codeLength);
                     pasted.split('').forEach((d, i) => {
                         if (cells[i]) cells[i].value = d;
                     });
@@ -111,6 +149,30 @@
                 submitting = true;
                 submitBtn.disabled = true;
             });
+
+            const hintBtn = document.getElementById('hint-button');
+            const hintsRemainingEl = document.getElementById('hints-remaining');
+            if (hintBtn) {
+                hintBtn.addEventListener('click', async () => {
+                    if (hintBtn.disabled) return;
+                    hintBtn.disabled = true;
+                    const token = hintBtn.dataset.gameToken;
+                    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+                    try {
+                        const res = await fetch(`/games/${token}/hints`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Accept': 'application/json' }
+                        });
+                        if (!res.ok) {
+                            hintBtn.disabled = false;
+                            return;
+                        }
+                        window.location.reload();
+                    } catch (err) {
+                        hintBtn.disabled = false;
+                    }
+                });
+            }
         })();
     </script>
     <% end %>

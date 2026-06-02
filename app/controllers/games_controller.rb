@@ -4,6 +4,7 @@ class GamesController < ApplicationController
 
   def new
     @game = Game.new
+    @top_games = Game.top10
   end
 
   def create
@@ -37,7 +38,6 @@ class GamesController < ApplicationController
 
       redirect_to game_path(@game)
     else
-      p "Game failed to save: #{@game.errors.full_messages.join(', ')}"
       render :new
     end
   end
@@ -47,10 +47,19 @@ class GamesController < ApplicationController
     @guess = Guess.new
   end
 
+  def update
+    @game = Game.find_by!(token: params[:token])
+    if @game.won? && @game.winner_name.blank?
+      submitted = params.require(:game).permit(:winner_name)[:winner_name].to_s.strip.presence
+      @game.update(winner_name: submitted) if submitted
+    end
+    redirect_to game_path(@game)
+  end
+
   private  # Add this line
 
   def game_params
-    params.fetch(:game, {}).permit(:user_id)  # Add any other permitted parameters
+    params.fetch(:game, {}).permit(:user_id, :difficulty)
   end
 
   def set_game
@@ -81,6 +90,6 @@ class GamesController < ApplicationController
       method: request.method
     }
 
-    p "User Meta Data: #{user_meta_data.inspect}"
+    user_meta_data
   end
 end

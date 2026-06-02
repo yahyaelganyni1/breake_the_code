@@ -4,12 +4,12 @@
             <h1 class="game-logo">BREAK<br><span class="game-logo__accent">THE CODE</span></h1>
             <div class="logo-glow"></div>
         </div>
-        <p class="home-tagline">A 4-digit logic puzzle. Crack the code in as few guesses as you can.</p>
+        <p class="home-tagline">A logic puzzle. Crack the code in as few guesses as you can.</p>
     </header>
 
     <section class="home-howto" aria-labelledby="howto-title">
         <h2 id="howto-title" class="home-howto__title">How to play</h2>
-        <p class="home-howto__intro">Guess 4 unique digits (1–9). After each guess you get feedback:</p>
+        <p class="home-howto__intro">Guess the secret code of unique digits. After each guess you get feedback:</p>
         <ul class="home-howto__list">
             <li class="home-howto__item">
                 <span class="home-howto__badge right-number-right-place" aria-hidden="true"></span>
@@ -26,9 +26,46 @@
         </ul>
     </section>
 
+    <section class="home-leaderboard" aria-labelledby="leaderboard-title">
+        <h2 id="leaderboard-title" class="home-leaderboard__title">Top 10 Code Breakers</h2>
+        <% if @top_games.any? %>
+            <ol class="home-leaderboard__list">
+                <% @top_games.each_with_index do |g, i| %>
+                    <li class="home-leaderboard__row">
+                        <span class="home-leaderboard__rank">#<%= i + 1 %></span>
+                        <span class="home-leaderboard__name"><%= g.winner_name %></span>
+                        <span class="home-leaderboard__difficulty home-leaderboard__difficulty--<%= g.difficulty %>"><%= g.difficulty.capitalize %></span>
+                        <span class="home-leaderboard__score"><%= g.score %></span>
+                    </li>
+                <% end %>
+            </ol>
+        <% else %>
+            <p class="home-leaderboard__empty">No one has cracked the code yet. Be the first.</p>
+        <% end %>
+    </section>
+
     <div class="home-cta">
         <%= form_with model: @game, local: true do |form| %>
-        <%= form.submit "Start New Game", class: "home-cta__button" %>
+            <fieldset class="difficulty-picker" aria-label="Choose difficulty">
+                <legend class="difficulty-picker__legend">Difficulty</legend>
+                <div class="difficulty-picker__options">
+                    <% Game::DIFFICULTIES.each do |key, cfg| %>
+                        <label class="difficulty-picker__option difficulty-picker__option--<%= key %>">
+                            <%= form.radio_button :difficulty, key, checked: key == "normal" %>
+                            <span class="difficulty-picker__label">
+                                <span class="difficulty-picker__name"><%= key.capitalize %></span>
+                                <span class="difficulty-picker__meta">
+                                    <%= cfg[:code_length] %> digits ·
+                                    <%= cfg[:digit_pool].min %>–<%= cfg[:digit_pool].max %> ·
+                                    <%= cfg[:max_attempts] %> tries ·
+                                    ×<%= cfg[:multiplier] %>
+                                </span>
+                            </span>
+                        </label>
+                    <% end %>
+                </div>
+            </fieldset>
+            <%= form.submit "Start New Game", class: "home-cta__button" %>
         <% end %>
         <div class="start-button-glow"></div>
     </div>

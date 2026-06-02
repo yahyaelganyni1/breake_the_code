@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_28_151910) do
+ActiveRecord::Schema[7.0].define(version: 2026_06_02_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_28_151910) do
     t.jsonb "metadata"
     t.integer "score"
     t.string "winner_name"
+    t.string "difficulty", default: "normal", null: false
+    t.integer "hints_used", default: 0, null: false
     t.index ["token"], name: "index_games_on_token", unique: true
   end
 
