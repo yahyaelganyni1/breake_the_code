@@ -1,71 +1,158 @@
 <div class="game-page">
-    <h1 class="game-page_title">Break the Code</h1>
-    <%= form_with model: [@game, @guess], local: true, class: "game-page_form" do |form| %>
-    <div>
-        <div class="input-container">
-            <%=
-          form.number_field :code, pattern: "[1-9]+",
-           title: "Please enter numbers 1-9 only",
-            oninput: "checkDuplicate(this)",
-             required: true, minlength: 4, maxlength: 4,
-              disabled: @game.over? || @game.won?,
-              class: "game-page_form_input",
-              placeholder: "X X X X",
-              autofocus: true
-             %>
-            <div class="input-hint">Enter 4 unique digits (1-9 only)</div>
+    <header class="game-header">
+        <h1 class="game-page_title">Break the Code</h1>
+        <% guess_count = @game.guesses.size %>
+        <% unless @game.over? || @game.won? %>
+        <p class="game-header__meta">Guess <span><%= guess_count + 1 %></span></p>
+        <% end %>
+    </header>
+
+    <%= render "games/partials/gameover", game: @game %>
+
+    <% unless @game.over? || @game.won? %>
+    <%= form_with model: [@game, @guess], local: true, class: "game-page_form", data: { controller: "code-input" } do |form| %>
+        <div class="code-input" role="group" aria-label="Enter your 4-digit guess">
+            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="0" aria-label="Digit 1" autofocus>
+            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="1" aria-label="Digit 2">
+            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="2" aria-label="Digit 3">
+            <input type="text" inputmode="numeric" pattern="[1-9]" maxlength="1" autocomplete="off" class="code-input__cell" data-index="3" aria-label="Digit 4">
+            <%= form.hidden_field :code, id: "guess_code" %>
         </div>
-        <script>
-            function checkDuplicate(input) {
-                const code = input.value;
-                const numbers = code.split("");
-                const uniqueNumbers = [...new Set(numbers)];
-                const validLength = code.length === 4;
-                const duplicateError = uniqueNumbers.length === numbers.length ? "" : "Duplicate numbers are not allowed.";
-                const lengthError = validLength ? "" : "Please enter exactly 4 numbers.";
-                const hasZero = code.includes('0');
-                const zeroError = hasZero ? "Zero is not allowed. Use digits 1-9 only." : "";
+        <p class="code-input__hint" id="code-hint">Use digits 1–9 only. No repeats.</p>
 
-                input.setCustomValidity(duplicateError + lengthError + zeroError);
+        <%= form.submit "Submit Guess", class: "game-page_form_button", disabled: true, id: "submit-guess-btn" %>
+    <% end %>
 
-                // Add animation effect when typing
-                if (input.value.length > 0) {
-                    input.classList.add('has-value');
+    <script>
+        (function () {
+            const cells = Array.from(document.querySelectorAll('.code-input__cell'));
+            const hiddenInput = document.getElementById('guess_code');
+            const submitBtn = document.getElementById('submit-guess-btn');
+            const hint = document.getElementById('code-hint');
+            if (!cells.length || !hiddenInput || !submitBtn) return;
+
+            function currentCode() {
+                return cells.map(c => c.value).join('');
+            }
+
+            function validate() {
+                const code = currentCode();
+                const digits = code.split('');
+                const unique = new Set(digits);
+                const allFilled = code.length === 4;
+                const noDuplicates = unique.size === digits.length;
+                const noZero = !code.includes('0');
+                const valid = allFilled && noDuplicates && noZero;
+
+                hiddenInput.value = code;
+                submitBtn.disabled = !valid;
+
+                if (!allFilled) {
+                    hint.textContent = 'Use digits 1–9 only. No repeats.';
+                    hint.classList.remove('code-input__hint--error');
+                } else if (!noZero) {
+                    hint.textContent = 'Zero is not allowed. Use digits 1–9.';
+                    hint.classList.add('code-input__hint--error');
+                } else if (!noDuplicates) {
+                    hint.textContent = 'Each digit must be unique.';
+                    hint.classList.add('code-input__hint--error');
                 } else {
-                    input.classList.remove('has-value');
+                    hint.textContent = 'Ready! Tap Submit.';
+                    hint.classList.remove('code-input__hint--error');
                 }
             }
-        </script>
-    </div>
-    <%= form.submit "Submit Guess", disabled: @game.over? || @game.won?, class: "game-page_form_button" %>
+
+            cells.forEach((cell, idx) => {
+                cell.addEventListener('input', (e) => {
+                    const v = cell.value.replace(/[^1-9]/g, '');
+                    cell.value = v.slice(-1);
+                    if (cell.value && idx < cells.length - 1) {
+                        cells[idx + 1].focus();
+                    }
+                    validate();
+                });
+
+                cell.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !cell.value && idx > 0) {
+                        cells[idx - 1].focus();
+                        cells[idx - 1].value = '';
+                        validate();
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowLeft' && idx > 0) {
+                        cells[idx - 1].focus();
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowRight' && idx < cells.length - 1) {
+                        cells[idx + 1].focus();
+                        e.preventDefault();
+                    } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (!submitBtn.disabled) submitBtn.form.requestSubmit(submitBtn);
+                    }
+                });
+
+                cell.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^1-9]/g, '').slice(0, 4);
+                    pasted.split('').forEach((d, i) => {
+                        if (cells[i]) cells[i].value = d;
+                    });
+                    const next = Math.min(pasted.length, cells.length - 1);
+                    cells[next].focus();
+                    validate();
+                });
+
+                cell.addEventListener('focus', () => cell.select());
+            });
+
+            const form = submitBtn.form;
+            let submitting = false;
+            form.addEventListener('submit', (e) => {
+                if (submitting) { e.preventDefault(); return; }
+                submitting = true;
+                submitBtn.disabled = true;
+            });
+        })();
+    </script>
     <% end %>
-    <%= render "games/partials/gameover", game: @game %>
+
     <% if @game.guesses.any? %>
-    <h2>Your Guesses</h2>
-    <ol class="game-page_guesses">
-        <% @game.guesses.each do |guess| %>
-        <li class="game-page_guesses_guess_list_item">
-            <p class="game-page_guesses_guess_list_item_the_guess">
-                <span class="guess-number"><%= @game.guesses.index(guess) + 1 %></span>
-                <span class="guess-code"><%= guess.code %></span>
-            </p>
-            <div class="game-page_guesses_feedback">
-                <% guess.feedback.each_char.with_index do |number, index| %>
-                <p class="game-page_guesses_feedback_p" style="animation-delay: <%= index * 0.1 %>s">
-                    <% if number == "1" %>
-                <div class="right-number-right-place" title="Right number, right place"></div>
-                <% end %>
-                <% if number == "2" %>
-                <div class="right-number-wrong-place" title="Right number, wrong place"></div>
-                <% end %>
-                <% if number == "3" %>
-                <div class="wrong" title="Wrong number"></div>
-                <% end %>
-                </p>
-                <% end %>
+    <section class="guesses-section">
+        <header class="guesses-header">
+            <h2>Your Guesses</h2>
+            <div class="legend" aria-label="Feedback legend">
+                <span class="legend__item"><span class="right-number-right-place" aria-hidden="true"></span><span>spot</span></span>
+                <span class="legend__item"><span class="right-number-wrong-place" aria-hidden="true"></span><span>digit</span></span>
+                <span class="legend__item"><span class="wrong" aria-hidden="true"></span><span>miss</span></span>
             </div>
-        </li>
-        <% end %>
-    </ol>
+        </header>
+        <ol class="game-page_guesses">
+            <% @game.guesses.reverse.each_with_index do |guess, reverse_index| %>
+            <% guess_number = @game.guesses.size - reverse_index %>
+            <li class="game-page_guesses_guess_list_item">
+                <div class="game-page_guesses_guess_list_item_the_guess">
+                    <span class="guess-number" aria-label="Guess number"><%= guess_number %></span>
+                    <span class="guess-code" aria-label="Your guess">
+                        <% guess.code.each_char do |digit| %>
+                        <span class="guess-code__digit"><%= digit %></span>
+                        <% end %>
+                    </span>
+                </div>
+                <div class="game-page_guesses_feedback" aria-label="Feedback">
+                    <% guess.feedback.each_char.with_index do |number, index| %>
+                    <span class="game-page_guesses_feedback_p" style="animation-delay: <%= index * 0.08 %>s">
+                        <% if number == "1" %>
+                        <span class="right-number-right-place" title="Right number, right place"></span>
+                        <% elsif number == "2" %>
+                        <span class="right-number-wrong-place" title="Right number, wrong place"></span>
+                        <% elsif number == "3" %>
+                        <span class="wrong" title="Wrong number"></span>
+                        <% end %>
+                    </span>
+                    <% end %>
+                </div>
+            </li>
+            <% end %>
+        </ol>
+    </section>
     <% end %>
 </div>

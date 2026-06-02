@@ -2,23 +2,16 @@
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
  *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
  *= require_tree .
  *= require_self
  */
 
 :root {
-  --primary: #6a26cd;
+  --primary: #7c3aed;
   --primary-dark: #4a1b91;
   --secondary: #ff7940;
-  --dark: #111827;
+  --dark: #0f0820;
+  --darker: #08040f;
   --light: #f9fafb;
   --success: #10b981;
   --error: #ef4444;
@@ -40,13 +33,18 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* CSS Reset */
 html,
 body,
 div,
@@ -116,7 +114,10 @@ td {
   vertical-align: baseline;
 }
 
-/* Add your custom styles below this line */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 a,
 ol,
@@ -125,15 +126,14 @@ ul {
   text-decoration: none;
 }
 
-/* remove default button styles */
 button {
   background-color: transparent;
   border: none;
   outline: none;
   cursor: pointer;
+  font-family: inherit;
 }
 
-/* remove style from input type button */
 input[type='button'] {
   background-color: transparent;
   border: none;
@@ -141,12 +141,22 @@ input[type='button'] {
   cursor: pointer;
 }
 
-/* Add your custom styles below this line */
-
 body {
   line-height: 1.5;
-  background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+  background: radial-gradient(
+      ellipse at top left,
+      rgba(124, 58, 237, 0.25),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(255, 121, 64, 0.18),
+      transparent 50%
+    ),
+    linear-gradient(160deg, var(--darker), var(--dark) 60%, #1a0b3d);
+  background-attachment: fixed;
   min-height: 100vh;
+  min-height: 100svh;
   color: var(--light);
   font-family: 'Poppins', sans-serif;
   position: relative;
@@ -156,40 +166,20 @@ body {
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-image: radial-gradient(
       circle at 25% 25%,
-      rgba(255, 255, 255, 0.1) 1px,
+      rgba(255, 255, 255, 0.08) 1px,
       transparent 1px
     ),
     radial-gradient(
       circle at 75% 75%,
-      rgba(255, 255, 255, 0.1) 1px,
+      rgba(255, 255, 255, 0.05) 1px,
       transparent 1px
     );
   background-size: 40px 40px;
   z-index: -1;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    45deg,
-    var(--primary) 0%,
-    transparent 20%,
-    transparent 80%,
-    var(--secondary) 100%
-  );
-  opacity: 0.1;
-  z-index: -1;
+  pointer-events: none;
 }
 
 h1,
@@ -209,34 +199,33 @@ strong {
 }
 
 .app-container {
-  max-width: 1200px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: calc(0.75rem + var(--safe-top)) calc(1rem + var(--safe-right))
+    calc(1rem + var(--safe-bottom)) calc(1rem + var(--safe-left));
   min-height: 100vh;
+  min-height: 100svh;
   width: 100%;
   overflow-x: hidden;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .app-container {
-    padding: 0.75rem;
-  }
-
-  :root {
-    --border-radius-lg: 0.75rem;
-    --border-radius: 0.375rem;
+    padding: calc(0.5rem + var(--safe-top)) calc(0.75rem + var(--safe-right))
+      calc(0.75rem + var(--safe-bottom)) calc(0.75rem + var(--safe-left));
   }
 }
 
 .notification {
-  background-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: var(--light);
-  padding: 1rem;
+  padding: 0.875rem 1rem;
   border-radius: var(--border-radius);
   text-align: center;
   margin-bottom: 1rem;
   box-shadow: var(--shadow);
   animation: fadeIn 0.5s ease-in-out;
+  font-size: 0.95rem;
 }
 
 @keyframes fadeIn {
@@ -262,18 +251,6 @@ strong {
   }
 }
 
-@keyframes glowPulse {
-  0% {
-    box-shadow: 0 0 5px rgba(106, 38, 205, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(106, 38, 205, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(106, 38, 205, 0.5);
-  }
-}
-
 button,
 .button,
 input[type='submit'] {
@@ -285,11 +262,13 @@ input[type='submit'] {
   cursor: pointer;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background 0.3s ease;
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
   z-index: 1;
+  min-height: 44px;
 }
 
 button::before,
@@ -311,18 +290,27 @@ input[type='submit']::before {
   z-index: -1;
 }
 
-button:hover,
-.button:hover,
-input[type='submit']:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  background: linear-gradient(to right, var(--primary-dark), var(--primary));
+@media (hover: hover) {
+  button:hover,
+  .button:hover,
+  input[type='submit']:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+  }
+
+  button:hover::before,
+  .button:hover::before,
+  input[type='submit']:hover::before {
+    left: 100%;
+  }
 }
 
-button:hover::before,
-.button:hover::before,
-input[type='submit']:hover::before {
-  left: 100%;
+button:active,
+.button:active,
+input[type='submit']:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow);
 }
 
 button:disabled,
@@ -352,14 +340,21 @@ input[type='submit']:disabled {
   padding: 0 0.2em;
 }
 
+@keyframes textShine {
+  to {
+    background-position: 200% center;
+  }
+}
+
 .game-page_over_message {
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
+  padding: 1.25rem 1rem;
+  border-radius: var(--border-radius-lg);
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   border-left: 4px solid var(--primary);
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   animation: fadeIn 0.5s ease-out;
 }
@@ -368,6 +363,11 @@ input[type='submit']:disabled {
   margin-bottom: 0.5rem;
   color: var(--light);
   font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.game-page_over_message p {
+  font-size: 1rem;
 }
 
 .game-page_over_message.success {
@@ -378,19 +378,19 @@ input[type='submit']:disabled {
   color: var(--success);
 }
 
-@keyframes textShine {
-  to {
-    background-position: 200% center;
-  }
+.right-number-right-place,
+.right-number-wrong-place,
+.wrong {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  border-radius: 50%;
+  margin: 0 3px;
+  flex-shrink: 0;
 }
 
 .right-number-right-place {
-  width: 24px;
-  height: 24px;
-  position: relative;
   background-color: var(--success);
-  border-radius: 50%;
-  margin: 0 5px;
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
   animation: pulse 2s infinite;
 }
@@ -400,20 +400,15 @@ input[type='submit']:disabled {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 8px;
-  height: 13px;
+  width: 7px;
+  height: 12px;
   border-bottom: 2px solid white;
   border-right: 2px solid white;
   transform: translate(-50%, -60%) rotate(45deg);
 }
 
 .right-number-wrong-place {
-  width: 24px;
-  height: 24px;
-  position: relative;
   background-color: var(--warning);
-  border-radius: 50%;
-  margin: 0 5px;
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
 }
 
@@ -423,40 +418,15 @@ input[type='submit']:disabled {
   top: 50%;
   left: 50%;
   width: 8px;
-  height: 14px;
-  border-bottom: 2px solid #00ff00;
-  border-right: 2px solid #00ff00;
-  transform: translate(-50%, -65%) rotate(32deg);
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  transform: translate(-50%, -50%);
 }
 
 .wrong {
-  width: 24px;
-  height: 24px;
-  position: relative;
   background-color: var(--error);
-  border-radius: 50%;
-  margin: 0 5px;
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-}
-
-/* Mobile adjustments for feedback indicators */
-@media (max-width: 768px) {
-  .right-number-right-place,
-  .right-number-wrong-place,
-  .wrong {
-    width: 20px;
-    height: 20px;
-    margin: 0 3px;
-  }
-
-  .right-number-right-place::before {
-    width: 6px;
-    height: 10px;
-  }
-
-  .right-number-wrong-place::before {
-    font-size: 14px;
-  }
 }
 
 .wrong::before,
@@ -465,9 +435,10 @@ input[type='submit']:disabled {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 12px;
+  width: 11px;
   height: 2px;
   background-color: white;
+  border-radius: 1px;
 }
 
 .wrong::before {
@@ -483,107 +454,118 @@ input[type='submit']:disabled {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
   }
   70% {
-    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
   }
   100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
 }
 
-/* GitHub Star Button */
-.github-star-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
+@media (max-width: 480px) {
+  .right-number-right-place,
+  .right-number-wrong-place,
+  .wrong {
+    width: 18px;
+    height: 18px;
+    margin: 0 2px;
+  }
+
+  .right-number-right-place::before {
+    width: 5px;
+    height: 9px;
+  }
+
+  .right-number-wrong-place::before {
+    width: 6px;
+    height: 6px;
+  }
+
+  .wrong::before,
+  .wrong::after {
+    width: 9px;
+  }
 }
 
 .github-star-btn {
-  display: flex;
+  position: fixed;
+  top: calc(0.75rem + var(--safe-top));
+  right: calc(0.75rem + var(--safe-right));
+  z-index: 1000;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--gray-900);
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(15, 8, 32, 0.85);
   color: white;
   text-decoration: none;
-  border-radius: var(--border-radius);
+  border-radius: 999px;
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 500;
   box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  border: 1px solid var(--gray-700);
-  font-size: 0.85em;
-  padding: 2px 8px;
+  transition: transform 0.2s ease, background 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .github-star-btn:hover {
-  background: var(--gray-800);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  background: rgba(31, 16, 64, 0.95);
+  transform: translateY(-1px);
   color: white;
 }
 
 .github-star-btn svg {
-  width: 16px;
-  height: 16px;
   vertical-align: middle;
-  margin-right: 4px;
+  flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
-  .github-star-container {
-    top: 10px;
-    right: 10px;
-  }
-
+@media (max-width: 600px) {
   .github-star-btn {
-    padding: 6px 12px;
-    font-size: 12px;
+    padding: 8px;
+    gap: 0;
   }
 
-  .github-star-btn svg {
-    width: 14px;
-    height: 14px;
+  .github-star-btn__label {
+    display: none;
   }
 }
 
-/* Social Media Sharing Styles */
 .social-sharing {
-  margin-top: 20px;
+  margin-top: 1.25rem;
   text-align: center;
 }
 
 .social-sharing-text {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: 'Orbitron', monospace;
+  color: var(--secondary);
+  margin-bottom: 0.875rem;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .social-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .social-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
   border: none;
   border-radius: var(--border-radius);
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: var(--shadow-sm);
+  min-height: 44px;
 }
 
 .social-btn:hover {
@@ -611,49 +593,24 @@ input[type='submit']:disabled {
   color: white;
 }
 
-.instagram-btn {
-  background: linear-gradient(
-    45deg,
-    #f09433 0%,
-    #e6683c 25%,
-    #dc2743 50%,
-    #cc2366 75%,
-    #bc1888 100%
-  );
-  color: white;
-}
-
-.instagram-btn:hover {
-  background: linear-gradient(
-    45deg,
-    #e6843c 0%,
-    #dc5d35 25%,
-    #d21f3c 50%,
-    #c21c5f 75%,
-    #b21681 100%
-  );
-  color: white;
-}
-
 .social-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .social-buttons {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
   .social-btn {
     width: 100%;
-    max-width: 280px;
     justify-content: center;
   }
 }
 
-/* Copy notification */
 .copy-notification {
   position: fixed;
   top: 50%;
@@ -671,4 +628,14 @@ input[type='submit']:disabled {
 
 .copy-notification.show {
   opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
