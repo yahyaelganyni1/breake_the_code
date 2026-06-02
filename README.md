@@ -1,6 +1,6 @@
 # Break the Code 🔐
 
-A challenging and engaging web-based code-breaking game built with Ruby on Rails. Test your deduction skills by trying to guess a secret 4-digit code within 10 attempts!
+A web-based code-breaking game built with Ruby on Rails. Test your deduction skills by cracking a secret code before your attempts run out!
 
 ## 🎮 Live Demo
 
@@ -8,56 +8,90 @@ A challenging and engaging web-based code-breaking game built with Ruby on Rails
 
 ## 🎯 Game Overview
 
-Break the Code is a digital version of the classic mastermind game. Players must guess a secret 4-digit code where:
-
-- Each digit is unique and ranges from 1 to 9
-- You have a maximum of 10 attempts to crack the code
-- After each guess, you receive visual feedback to guide your next move
+Break the Code is a digital take on the classic Mastermind game. A secret code is generated at the start of each game — your job is to crack it using logical deduction and the color-coded feedback after each guess.
 
 ### 🎲 How to Play
 
-1. **Start a New Game**: Click "Start New Game" to generate a random 4-digit code
-2. **Make Your Guess**: Enter 4 unique digits (1-9) in the input field
-3. **Analyze Feedback**: After each guess, you'll see colored indicators:
-   - 🟢 **Green**: Right number in the right position
-   - 🟡 **Yellow**: Right number but in the wrong position  
-   - 🔴 **Red**: Number is not in the code at all
-4. **Win or Lose**: Crack the code within 10 attempts to win!
+1. **Choose a Difficulty** and click "Start New Game"
+2. **Enter Your Guess**: type in the digits and submit
+3. **Read the Feedback** — indicators appear after each guess:
+   - 🟢 **Green**: correct digit in the correct position
+   - 🟡 **Yellow**: correct digit but wrong position
+   - 🔴 **Red**: digit is not in the code at all
+   > ⚠️ Feedback indicators are **shuffled** — they don't correspond to digit positions directly.
+4. **Use a Hint** (once per game) to reveal one digit and its exact position
+5. **Win or Lose**: crack the code within the allowed attempts!
+
+### 🏅 Difficulty Levels
+
+| Difficulty | Code Length | Digit Pool | Max Attempts | Score Multiplier |
+|------------|-------------|------------|--------------|-----------------|
+| Easy       | 4 digits    | 1–9        | 10           | ×1.0            |
+| Normal     | 4 digits    | 0–9        | 10           | ×1.5            |
+| Hard       | 4 digits    | 0–9        | 8            | ×2.5            |
 
 ### 🏆 Scoring System
 
-Your score is calculated based on:
+Scoring only applies when you win. Your final score is:
 
-- **Base Score**: 1,000 points
-- **Attempt Penalty**: -50 points per guess
-- **Time Penalty**: -10 points per minute
-- **Minimum Score**: 0 points (no negative scores)
+```
+final = (base − attempt_penalty − time_penalty − hint_penalty) × difficulty_multiplier
+```
+
+| Component        | Value                                  |
+|------------------|----------------------------------------|
+| Base score       | 1,000 points                           |
+| Attempt penalty  | −60 points per guess (after the first) |
+| Time penalty     | −10 points per minute elapsed          |
+| Hint penalty     | −150 points if a hint was used         |
+| Difficulty bonus | ×1.0 / ×1.5 / ×2.5                    |
+| Minimum score    | 0 (no negative scores)                 |
+
+### 🎖️ Achievements
+
+Earn badges within a game for exceptional play:
+
+| Badge            | Condition                                       |
+|------------------|-------------------------------------------------|
+| ⚡ Speed Demon   | Win in under 60 seconds                         |
+| 🎯 Sharpshooter  | Win in 4 guesses or fewer                       |
+| 🧠 Pure Skill    | Win without using a hint                        |
+| 💀 Hard Mode     | Win on Hard difficulty                          |
+| ✨ Flawless      | Every guess contained at least one green digit  |
+
+### 🏅 Leaderboard
+
+Top 10 all-time scores are displayed on the home page, ranked by score, then fewest attempts, then fastest time.
 
 ## 🚀 Features
 
-- **Clean, Modern UI**: Responsive design that works on all devices
-- **Real-time Feedback**: Visual indicators help guide your guessing strategy
-- **Score Tracking**: Performance-based scoring system
-- **Game Analytics**: Tracks player metadata (device, location, browser info)
-- **Unique Game Sessions**: Each game has a unique token for sharing
-<!-- - **Leaderboard**: Top 10 high scores (when implemented) -->
+- **Three Difficulty Levels**: Easy, Normal, and Hard with different digit pools, attempt limits, and score multipliers
+- **Hint System**: Reveal one secret digit per game (at a score penalty)
+- **Achievements**: Earn in-game badges for exceptional performance
+- **Leaderboard**: Top 10 high scores on the home screen
+- **Shareable Games**: Every game has a unique URL token
+- **Clean UI**: Responsive design with real-time feedback
+- **Game Analytics**: Tracks device, browser, and location data anonymously
 
 ## 🛠 Technical Stack
 
 - **Backend**: Ruby on Rails 7.0.8
 - **Database**: PostgreSQL
-- **Frontend**: HTML5, CSS3, JavaScript (Stimulus)
+- **Frontend**: HTML5, CSS3, Hotwire (Turbo + Stimulus)
 - **Deployment**: Fly.io
-- **Ruby Version**: 3.2.2
+- **Ruby**: 3.2.2
 
 ### Key Dependencies
 
-- **geocoder**: For location-based analytics
-- **browser**: For device and browser detection
-- **pg**: PostgreSQL adapter
-- **puma**: Web server
-- **turbo-rails**: SPA-like page acceleration
-- **stimulus-rails**: JavaScript framework
+| Gem | Purpose |
+|-----|---------|
+| `pg` | PostgreSQL adapter |
+| `puma` | Web server |
+| `turbo-rails` | SPA-like page transitions |
+| `stimulus-rails` | JS framework |
+| `geocoder` | Location-based analytics |
+| `browser` | Device/browser detection |
+| `redis` | Action Cable support |
 
 ## 🔧 Setup and Installation
 
@@ -65,81 +99,47 @@ Your score is calculated based on:
 
 - Ruby 3.2.2
 - PostgreSQL
-- Bundler gem
+- Bundler
 
 ### Local Development
 
-1. **Clone the repository**
+```bash
+# 1. Clone the repository
+git clone https://github.com/yahyaelganyni1/breake_the_code.git
+cd breake_the_code
 
-   ```bash
-   git clone https://github.com/yahyaelganyni1/breake_the_code.git
+# 2. Install dependencies
+bundle install
 
-   cd breake_the_code
-   ```
+# 3. Set up the database
+rails db:create db:migrate
 
-2. **Install dependencies**
+# 4. Start the server
+rails server
+```
 
-   ```bash
-   bundle install
-   ```
-
-3. **Setup database**
-
-   ```bash
-   rails db:create
-   rails db:migrate
-   ```
-
-4. **Start the server**
-
-   ```bash
-   rails server
-   ```
-
-5. **Visit the application**
-
-   ```text
-   http://localhost:3000
-   ```
+Then open [http://localhost:3000](http://localhost:3000).
 
 ## 📊 Game Analytics
 
-The application tracks anonymous user data including:
+Each game anonymously records:
 
-- Device and browser information
-- Geographic location (country/city)
-- Referrer information
-- Game performance metrics
-
-## 🎯 Future Enhancements
-
-- [ ] Difficulty levels (3, 4, 5 digit codes)
-- [ ] Multiplayer mode
-- [ ] Daily challenges
-- [ ] Achievement system
-- [ ] Social media sharing
-- [ ] Mobile app version
+- Device type, browser name & version, platform
+- IP address, country, and city (via geocoder)
+- Referrer URL and user agent
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m 'Add my feature'`
+4. Push to the branch: `git push origin feature/my-feature`
 5. Open a Pull Request
 
 ## 📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🎮 Play Now
-
-Ready to test your code-breaking skills?
-
-**👉 [Start Playing Break the Code](https://breake-the-code-2duiqa.fly.dev/)**
-
 ---
 
-### Built with ❤️ using Ruby on Rails
-
-### Give us a star if you like the project!
+Built with ❤️ using Ruby on Rails · **[Play now!](https://breake-the-code-2duiqa.fly.dev/)**
