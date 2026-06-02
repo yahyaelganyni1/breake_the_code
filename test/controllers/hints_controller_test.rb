@@ -43,15 +43,4 @@ class HintsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "create reveals different positions on successive calls" do
-    game = make_game
-
-    post game_hints_url(game), headers: { "Accept" => "application/json" }
-    first_position = JSON.parse(response.body)["hint"]["position"]
-
-    post game_hints_url(game), headers: { "Accept" => "application/json" }
-    second_position = JSON.parse(response.body)["hint"]["position"]
-
-    assert_not_equal first_position, second_position
-  end
 end

@@ -31,7 +31,7 @@ class Game < ApplicationRecord
   BASE_SCORE      = 1000
   ATTEMPT_PENALTY = 60
   HINT_PENALTY    = 150
-  MAX_HINTS       = 2
+  MAX_HINTS       = 1
 
   belongs_to :user, optional: true
   has_many :guesses, dependent: :destroy

@@ -66,13 +66,13 @@ class GameTest < ActiveSupport::TestCase
     assert_in_delta 2500, hard.score, 5
   end
 
-  test "hint penalty scales linearly with hints_used" do
-    game = build_game(difficulty: "normal", start_offset_seconds: 0, hints_used: 2)
+  test "hint penalty applied to score when a hint was used" do
+    game = build_game(difficulty: "normal", start_offset_seconds: 0, hints_used: 1)
     add_guess(game, "1234")
     game.check_game_over
 
-    # raw = 1000 - 0 - 0 - 300 = 700; final = 1050
-    assert_equal 1050, game.score
+    # raw = 1000 - 0 - 0 - 150 = 850; final = (850 * 1.5).round = 1275
+    assert_equal 1275, game.score
   end
 
   test "difficulty drives code_length, digit_pool, and max_attempts" do
