@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: games
+#
+#  id          :bigint           not null, primary key
+#  attempts    :integer
+#  difficulty  :string           default("normal"), not null
+#  end_time    :datetime
+#  hints_used  :integer          default(0), not null
+#  is_over     :boolean          default(FALSE)
+#  metadata    :jsonb
+#  score       :integer
+#  secret_code :string
+#  start_time  :datetime
+#  token       :string
+#  winner_name :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_games_on_token  (token) UNIQUE
+#
 require "test_helper"
 
 class GameTest < ActiveSupport::TestCase
